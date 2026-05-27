@@ -1,5 +1,7 @@
 # CampusShield — Custom Deployment Script for GitHub Pages
 $git = "D:\PortableGit\cmd\git.exe"
+$env:PATH = "C:\Program Files\nodejs;" + $env:PATH
+
 
 Write-Host "==========================================" -ForegroundColor Cyan
 Write-Host " Starting CampusShield Deployment Process " -ForegroundColor Cyan
@@ -21,6 +23,11 @@ if ($currentBranch -eq "main") {
 # 3. Checkout main branch
 Write-Host "`n[3/6] Switching to deployment branch (main)..." -ForegroundColor Cyan
 & $git checkout main
+if ($LASTEXITCODE -ne 0) {
+    Write-Host "Error: Failed to switch to 'main' branch. Deployment aborted to protect your source files." -ForegroundColor Red
+    exit 1
+}
+
 
 # 4. Clean root directory except key developer files
 Write-Host "`n[4/6] Cleaning main branch root directory..." -ForegroundColor Cyan
